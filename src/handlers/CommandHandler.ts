@@ -62,11 +62,11 @@ export default class CommandHandler {
 		if (this.command.defaultArgs) this.fillDefaults();
 
 		// Check permissions
-		if (!this.checkPermissions(this.command.userPermissions)) {
+		if (!this.checkPermissions()) {
 			return message.channel.send(this.config.values.messages.MissingUserPermissions);
 		}
 
-		if (!this.checkPermissions(this.command.clientPermissions)) {
+		if (!this.checkBotPermissions()) {
 			return message.channel.send(this.config.values.messages.MissingClientPermissions);
 		}
 
@@ -88,9 +88,15 @@ export default class CommandHandler {
 		});
 	}
 
-	private checkPermissions(permissionList: PermissionResolvable[]) {
-		return permissionList.every(perm => {
+	private checkPermissions() {
+		return this.command.userPermissions.every(perm => {
 			return this.message.member.permissions.has(perm);
+		});
+	}
+
+	private checkBotPermissions() {
+		return this.command.clientPermissions.every(perm => {
+			return this.message.guild.me.permissions.has(perm);
 		});
 	}
 
