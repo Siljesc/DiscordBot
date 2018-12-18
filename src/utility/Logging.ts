@@ -1,33 +1,31 @@
 import { transports, format, createLogger } from "winston";
-const { combine, timestamp, printf } = format;
-
-import * as moment from "moment";
+const { combine, timestamp, printf, colorize } = format;
 
 const printFormat = printf(info => {
-	return `${moment(info.timestamp).format("YYYY-MM-DD HH:mm:ss")} ${info.level}: ${info.message}`;
+	return `${info.timestamp} ${info.level}: ${info.message}`;
 });
 
 const fileOptions = {
 	level: "info",
-	format: combine(timestamp(), printFormat, format.json()),
-	filename: "app.log"
+	filename: "app.log",
+	format: combine(
+		timestamp({
+			format: "YYYY-MM-DD hh:mm:ss A ZZ"
+		}),
+		format.json()
+	),
+	maxsize: 1024,
+	handleExceptions: true
 };
 
 const consoleOptions = {
 	level: "silly",
-	format: combine(timestamp(), printFormat)
+	colorize: true,
+	format: combine(colorize(), timestamp({ format: "YYYY-MM-DD HH:mm:ss" }), printFormat)
 };
 
 const logger = createLogger({
 	transports: [new transports.Console(consoleOptions), new transports.File(fileOptions)]
 });
-
-if (process.env.NODE_ENV !== "production") {
-	logger.add(
-		new transports.Console({
-			format: format.simple()
-		})
-	);
-}
 
 export default logger;
