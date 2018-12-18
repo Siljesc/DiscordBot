@@ -1,0 +1,6 @@
+{
+   "prettier.tslintIntegration": true,
+   "editor.formatOnSave": true,
+   "prettier.tabWidth": 3,
+   "prettier.useTabs": true
+}

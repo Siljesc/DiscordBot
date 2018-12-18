@@ -1,0 +1,7 @@
+{
+	"tabWidth": 3,
+	"useTabs": true,
+	"proseWrap": "never",
+	"eslintIntegration": false,
+	"printWidth": 120
+}

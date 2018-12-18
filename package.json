@@ -1,0 +1,34 @@
+{
+	"name": "discordbot",
+	"version": "1.0.0",
+	"description": "Boilerplate for Discord Bots",
+	"main": "app.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"build": "tsc"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/SunriseM/DiscordBot.git"
+	},
+	"author": "SunriseM",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/SunriseM/DiscordBot/issues"
+	},
+	"homepage": "https://github.com/SunriseM/DiscordBot#readme",
+	"devDependencies": {
+		"@types/dotenv": "^6.1.0",
+		"@types/mongodb": "^3.1.17",
+		"@types/glob": "^7.1.1",
+		"typescript": "^3.2.2"
+	},
+	"dependencies": {
+		"discord.js": "^11.4.2",
+		"dotenv": "^6.2.0",
+		"glob": "^7.1.3",
+		"moment": "^2.23.0",
+		"mongodb": "^3.1.10",
+		"winston": "^3.1.0"
+	}
+}
