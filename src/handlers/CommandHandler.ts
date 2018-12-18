@@ -1,6 +1,6 @@
 import { Db } from "mongodb";
 import Command from "./Command";
-import { Message, PermissionResolvable } from "discord.js";
+import { Message } from "discord.js";
 import { getCommands } from "../utility/Utils";
 import * as Validator from "../utility/Validator";
 import logger from "../utility/Logging";
