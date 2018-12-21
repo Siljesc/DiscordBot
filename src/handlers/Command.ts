@@ -1,11 +1,13 @@
 import { Message, PermissionResolvable } from "discord.js";
 
 import { Db } from "mongodb";
+import Config from "../utility/Config";
 
 export interface ICommandContext {
 	db: Db;
 	message: Message;
-	config: {};
+	config: Config;
+	args: any[];
 }
 
 export interface ICommandOptions {
