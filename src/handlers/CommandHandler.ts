@@ -1,36 +1,25 @@
-import { Db } from "mongodb";
 import Command from "./Command";
 import { Message } from "discord.js";
 import { getCommands } from "../utility/Utils";
-import * as Validator from "../utility/Validator";
 import logger from "../utility/Logging";
 import Config from "../utility/Config";
 
 export interface ICommandHandler {
-	db: Db;
-	config: Config;
 	commands: Command[];
 	command: Command;
 	message: Message;
 	userArgs: string[];
 	parsedArgs: string[];
-	parse: (message: Message) => Promise<Message | Message[]> | undefined;
+	parse: (message: Message, config: Config) => void;
 	init: () => Promise<void>;
 }
 
 export default class CommandHandler {
-	db: Db;
-	config: Config;
 	commands: Command[];
 	command: Command;
 	message: Message;
 	userArgs: string[];
 	parsedArgs: string[];
-
-	constructor(db: Db, config: any) {
-		this.db = db;
-		this.config = config;
-	}
 
 	async init() {
 		const commands = await getCommands();
@@ -41,10 +30,13 @@ export default class CommandHandler {
 		return;
 	}
 
-	public parse(message: Message) {
+	public parse(message: Message, config: Config) {
 		this.message = message;
 
-		const withoutPrefix = message.content.slice(this.config.values.prefix.length);
+		const guildConfig = config.byID(message.guild.id);
+		const ctx = { message, config: guildConfig };
+
+		const withoutPrefix = message.content.slice(guildConfig.prefix.length);
 		const [cmdName, ...cmdArgs] = withoutPrefix.split(" ");
 
 		const foundCommand = this.commands.find(cmd => {
@@ -52,89 +44,27 @@ export default class CommandHandler {
 		});
 
 		if (!foundCommand) {
-			return message.channel.send(this.config.values.messages.InvalidCommandName);
+			message.channel.send(guildConfig.messages.InvalidCommandName);
+			return;
 		}
 
 		this.command = foundCommand;
-		this.userArgs = cmdArgs;
-
-		// Check if we need to use default args
-		if (this.command.defaultArgs) this.fillDefaults();
+		this.command
+			.setContext(ctx)
+			.setUserArgs(cmdArgs)
+			.fillDefaults();
 
 		// Check permissions
-		if (!this.checkPermissions()) {
-			return message.channel.send(this.config.values.messages.MissingUserPermissions);
+		if (!this.command.checkPermissions()) {
+			message.channel.send(guildConfig.messages.MissingUserPermissions);
+			return;
 		}
 
-		if (!this.checkBotPermissions()) {
-			return message.channel.send(this.config.values.messages.MissingClientPermissions);
+		if (!this.command.checkBotPermissions()) {
+			message.channel.send(guildConfig.values.messages.MissingClientPermissions);
+			return;
 		}
 
-		// Validate arguments and replace values
-		if (this.command.expected && !this.validate()) return;
-
-		const ctx = {
-			db: this.db,
-			message: this.message,
-			config: this.config
-		};
-
-		this.command.run(ctx, this.userArgs);
-	}
-
-	private fillDefaults() {
-		this.userArgs = this.userArgs.map((_, index) => {
-			return this.userArgs[index] || this.command.defaultArgs[index];
-		});
-	}
-
-	private checkPermissions() {
-		return this.command.userPermissions.every(perm => {
-			return this.message.member.permissions.has(perm);
-		});
-	}
-
-	private checkBotPermissions() {
-		return this.command.clientPermissions.every(perm => {
-			return this.message.guild.me.permissions.has(perm);
-		});
-	}
-
-	private validate() {
-		const errors: string[] = [];
-		const devErrors: string[] = [];
-
-		//sorry for the side effect
-		const invalid = this.command.expected.filter((expect, index) => {
-			const validator = Validator.default[expect];
-			const value = this.userArgs[index];
-
-			if (!validator) {
-				devErrors.push(`${expect} is not valid`);
-				return true;
-			}
-
-			const { isValid, invalidMessage, normalizedValue } = validator(value, this.message);
-
-			if (!isValid) {
-				errors.push(`Invalid Argument [${this.command.args[index]}]: ${invalidMessage}`);
-				return true;
-			}
-
-			this.userArgs[index] = normalizedValue || value;
-			return false;
-		});
-
-		if (!invalid.length) return true;
-
-		const errorMessage = errors.join("\n");
-		const devErrorMessage = errors.join("\n");
-
-		if (errorMessage.length > 0) this.message.channel.send(errorMessage);
-
-		if (devErrorMessage.length > 0) {
-			this.message.channel.send(this.config.values.messages.CommandHandlingError);
-			logger.error(devErrorMessage);
-		}
+		this.command.run();
 	}
 }

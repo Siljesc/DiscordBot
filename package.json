@@ -20,8 +20,9 @@
 	"homepage": "https://github.com/SunriseM/DiscordBot#readme",
 	"devDependencies": {
 		"@types/dotenv": "^6.1.0",
-		"@types/mongodb": "^3.1.17",
 		"@types/glob": "^7.1.1",
+		"@types/mongodb": "^3.1.17",
+		"@types/mongoose": "^5.3.5",
 		"typescript": "^3.2.2"
 	},
 	"dependencies": {
