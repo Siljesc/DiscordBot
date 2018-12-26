@@ -8,8 +8,6 @@ export interface ICommandHandler {
 	commands: Command[];
 	command: Command;
 	message: Message;
-	userArgs: string[];
-	parsedArgs: string[];
 	parse: (message: Message, config: Config) => void;
 	init: () => Promise<void>;
 }
@@ -18,10 +16,8 @@ export default class CommandHandler {
 	commands: Command[];
 	command: Command;
 	message: Message;
-	userArgs: string[];
-	parsedArgs: string[];
 
-	async init() {
+	public async init() {
 		const commands = await getCommands();
 		this.commands = commands;
 
@@ -33,10 +29,10 @@ export default class CommandHandler {
 	public parse(message: Message, config: Config) {
 		this.message = message;
 
-		const guildConfig = config.byID(message.guild.id);
+		const guildConfig = config.fromID(message.guild.id);
 		const ctx = { message, config: guildConfig };
 
-		const withoutPrefix = message.content.slice(guildConfig.prefix.length);
+		const withoutPrefix = message.content.slice(guildConfig.values.prefix.length);
 		const [cmdName, ...cmdArgs] = withoutPrefix.split(" ");
 
 		const foundCommand = this.commands.find(cmd => {
@@ -44,7 +40,7 @@ export default class CommandHandler {
 		});
 
 		if (!foundCommand) {
-			message.channel.send(guildConfig.messages.InvalidCommandName);
+			message.channel.send(guildConfig.values.messages.InvalidCommandName);
 			return;
 		}
 
@@ -56,7 +52,7 @@ export default class CommandHandler {
 
 		// Check permissions
 		if (!this.command.checkPermissions()) {
-			message.channel.send(guildConfig.messages.MissingUserPermissions);
+			message.channel.send(guildConfig.values.messages.MissingUserPermissions);
 			return;
 		}
 
