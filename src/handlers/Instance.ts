@@ -3,6 +3,7 @@ import CommandHandler, { ICommandHandler } from "./CommandHandler";
 import logger from "../utility/Logging";
 import { connect } from "../database/Database";
 import Config from "../utility/Config";
+import { setupGuilds } from "../utility/setup";
 
 export interface IInstance {
 	client: Discord.Client;
@@ -35,6 +36,10 @@ export default class Instance implements IInstance {
 		}
 
 		logger.info("Connected to Database");
+
+		await setupGuilds(this.client.guilds.array(), this.config);
+
+		logger.info("Setup Guilds");
 
 		this._commandHandler = new CommandHandler();
 		await this._commandHandler.init();
