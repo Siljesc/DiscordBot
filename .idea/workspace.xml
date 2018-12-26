@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c3bcd75d-8e9e-4147-9f4d-cdc42584cda2" name="Default Changelist" comment="" />
+    <list default="true" id="c3bcd75d-8e9e-4147-9f4d-cdc42584cda2" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/utility/setup.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/database/models/Config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/database/models/Config.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/database/models/Guild.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/database/models/Guild.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/database/models/Member.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/database/models/Member.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/events/Client.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/events/Client.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/handlers/Instance.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/handlers/Instance.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utility/Config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utility/Config.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utility/Globals.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utility/Utils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utility/Utils.ts" afterDir="false" />
+    </list>
     <ignored path="$PROJECT_DIR$/node_modules/" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -26,8 +36,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/handlers/Instance.ts">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="166">
-              <caret line="35" selection-start-line="35" selection-end-line="35" />
+            <state relative-caret-position="235">
+              <caret line="38" selection-start-line="38" selection-end-line="38" />
               <folding>
                 <element signature="e#0#38#0" expanded="true" />
               </folding>
@@ -38,8 +48,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/utility/Config.ts">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="189">
-              <caret line="37" column="24" lean-forward="true" selection-start-line="37" selection-start-column="24" selection-end-line="37" selection-end-column="24" />
+            <state relative-caret-position="626">
+              <caret line="56" column="24" lean-forward="true" selection-start-line="56" selection-start-column="24" selection-end-line="56" selection-end-column="24" />
             </state>
           </provider>
         </entry>
@@ -56,8 +66,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/events/Client.ts">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="115">
-              <caret line="5" column="19" selection-start-line="5" selection-start-column="19" selection-end-line="5" selection-end-column="19" />
+            <state relative-caret-position="138">
+              <caret line="6" selection-start-line="6" selection-end-line="6" />
               <folding>
                 <element signature="e#0#49#0" expanded="true" />
               </folding>
@@ -80,8 +90,11 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/database/models/Guild.ts">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="69">
-              <caret line="3" selection-start-line="3" selection-end-line="3" />
+            <state relative-caret-position="368">
+              <caret line="16" lean-forward="true" selection-start-line="16" selection-end-line="16" />
+              <folding>
+                <element signature="e#0#37#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -262,7 +275,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="20825000" />
+    <option name="totallyTimeSpent" value="20966000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -413,8 +426,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/handlers/Instance.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="166">
-          <caret line="35" selection-start-line="35" selection-end-line="35" />
+        <state relative-caret-position="235">
+          <caret line="38" selection-start-line="38" selection-end-line="38" />
           <folding>
             <element signature="e#0#38#0" expanded="true" />
           </folding>
@@ -451,15 +464,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/utility/Config.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="37" column="24" lean-forward="true" selection-start-line="37" selection-start-column="24" selection-end-line="37" selection-end-column="24" />
+        <state relative-caret-position="626">
+          <caret line="56" column="24" lean-forward="true" selection-start-line="56" selection-start-column="24" selection-end-line="56" selection-end-column="24" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/events/Client.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="115">
-          <caret line="5" column="19" selection-start-line="5" selection-start-column="19" selection-end-line="5" selection-end-column="19" />
+        <state relative-caret-position="138">
+          <caret line="6" selection-start-line="6" selection-end-line="6" />
           <folding>
             <element signature="e#0#49#0" expanded="true" />
           </folding>
@@ -478,8 +491,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/database/models/Guild.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="69">
-          <caret line="3" selection-start-line="3" selection-end-line="3" />
+        <state relative-caret-position="368">
+          <caret line="16" lean-forward="true" selection-start-line="16" selection-end-line="16" />
+          <folding>
+            <element signature="e#0#37#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

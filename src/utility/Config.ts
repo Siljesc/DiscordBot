@@ -1,4 +1,5 @@
 import { Snowflake } from "discord.js";
+import { ConfigModel }  from "../database/models/Config";
 
 export interface IConfigMessages {
 	InvalidCommandName: string;
@@ -24,11 +25,29 @@ export const guildConfigValues : IConfig = {
 
 export class GuildConfig {
 	private _values: IConfig;
+	private _ready = false;
 	public id: Snowflake;
 
 	constructor(id: Snowflake) {
 		this.id = id;
 		this._values = guildConfigValues;
+	}
+
+	async init(){
+		if(this._ready) return;
+
+		const dbConfig = await this.getDBValues();
+		this._values = {...this._values, ...dbConfig};
+		this._ready = true;
+	}
+
+	private async getDBValues(){
+		const config = await ConfigModel.find({guild_id: this.id}).exec();
+		if(!config) return;
+
+		return config.reduce((accum: object, current) => {
+			return {...accum, [current.id]: current.value};
+		}, {})
 	}
 
 	get values(){
@@ -45,7 +64,7 @@ export default class Config {
 		[guildID: string]: GuildConfig;
 	} = {};
 
-	fromID(guildID: Snowflake){
+	public fromID(guildID: Snowflake){
 		if (!this.guilds[guildID]) this.guilds[guildID] = new GuildConfig(guildID);
 		return this.guilds[guildID];
 	}
