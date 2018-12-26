@@ -1,9 +1,9 @@
 import { Message, PermissionResolvable } from "discord.js";
-import Config from "../utility/Config";
+import { GuildConfig } from "../utility/Config";
 
 export interface ICommandContext {
 	message: Message;
-	config: Config;
+	config: GuildConfig;
 }
 
 export interface ICommandOptions {
@@ -17,9 +17,7 @@ export interface ICommandOptions {
 	clientPermissions: PermissionResolvable[];
 	userPermissions: PermissionResolvable[];
 	rolesNeeded: string[];
-	userArgs: string[];
-	ctx: ICommandContext;
-	run: () => void;
+	run: () => Promise<void>;
 }
 
 export default class Command {
@@ -35,7 +33,7 @@ export default class Command {
 	rolesNeeded: string[];
 	userArgs: string[];
 	ctx: ICommandContext;
-	run: () => void;
+	run: () => Promise<void>;
 
 	constructor(options: ICommandOptions) {
 		this.name = options.name;
