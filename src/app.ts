@@ -4,15 +4,15 @@ import * as dotenv from "dotenv";
 import * as messageEvent from "./events/Message";
 import * as channelEvent from "./events/Channel";
 import * as guildEvent from "./events/Guild";
-import * as clientEvent from "./events/Client";
 
 dotenv.config();
 
 const DISCORD_TOKEN = process.env["DISCORD_TOKEN"];
 if (!DISCORD_TOKEN) throw new Error("Couldn't find Discord token.");
 
-(() => {
+(async () => {
 	const instance = new Instance(DISCORD_TOKEN);
+	await instance.init();
 
 	//Channel Events
 	instance.client.on("channelCreate", channel => {
@@ -60,12 +60,6 @@ if (!DISCORD_TOKEN) throw new Error("Couldn't find Discord token.");
 	});
 
 	// instance.client.on('messageUpdate', (oldMessage, newMessage) => {
-	//    messageEvent.onMesageUpdate(instance, oldMessage, newMessage);
+	//    messageEvent.onMessageUpdate(instance, oldMessage, newMessage);
 	// });
-
-	// Client Events
-
-	instance.client.on("ready", () => {
-		clientEvent.onReady(instance);
-	});
 })();
