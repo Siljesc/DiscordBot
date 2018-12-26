@@ -14,22 +14,27 @@ export interface IInstance {
 export default class Instance implements IInstance {
 	public client: Discord.Client;
 	public config: Config;
+	public token: string;
 	private _commandHandler: ICommandHandler;
 
 	constructor(token: string) {
 		this.client = new Discord.Client();
 		this.config = new Config();
-		this.client.login(token);
+		this.token = token;
 	}
 
 	public async init() {
-		logger.info("Connected to Database");
+		await this.client.login(this.token);
+
+		logger.info("Connected to Discord");
 
 		try {
 			await connect();
 		} catch (err) {
-			throw new Error(`Couldn't connect to Databae. Error: ${err}`);
+			throw new Error(`Couldn't connect to Database. Error: ${err}`);
 		}
+
+		logger.info("Connected to Database");
 
 		this._commandHandler = new CommandHandler();
 		await this._commandHandler.init();
