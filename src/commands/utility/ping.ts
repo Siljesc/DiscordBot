@@ -1,11 +1,11 @@
-import Command, { ICommandContext } from "../../handlers/Command";
+import Command from "../../handlers/Command";
 
-async function getPing(ctx: ICommandContext) {
+async function getPing() {
 	const dateNow = Date.now();
-	const messageDate = ctx.message.createdAt.getTime();
+	const messageDate = this.ctx.message.createdAt.getTime();
 	const difference = dateNow - messageDate;
 
-	ctx.message.channel.send(`${difference}ms`);
+	await this.ctx.message.channel.send(`${difference}ms`);
 }
 
 export default new Command({
