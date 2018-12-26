@@ -62,3 +62,4 @@ typings/
 
 # Added by me
 dist/
+.idea/

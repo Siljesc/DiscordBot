@@ -1,4 +1,4 @@
-import { Db } from "mongodb";
+import { Snowflake } from "discord.js";
 
 export interface IConfigMessages {
 	InvalidCommandName: string;
@@ -7,32 +7,46 @@ export interface IConfigMessages {
 	CommandHandlingError: string;
 }
 
-export default class Config {
-	public db: Db;
-	private _values: {
-		messages: IConfigMessages;
-		prefix: string;
-	};
+export interface IConfig {
+	messages: IConfigMessages
+	prefix: string
+}
 
-	constructor(db: Db) {
-		this.db = db;
+export const guildConfigValues : IConfig = {
+	messages: {
+		InvalidCommandName: "Invalid Command",
+		MissingUserPermissions: "You don't have permissions for this",
+		MissingClientPermissions: "Bot doesn't have permissions for this",
+		CommandHandlingError: "This command is broken",
+	},
+	prefix: "!"
+};
 
-		this._values = {
-			messages: {
-				InvalidCommandName: "Invalid Command",
-				MissingUserPermissions: "You don't have permissions for this",
-				MissingClientPermissions: "Bot doesn't have permissions for this",
-				CommandHandlingError: "This command is broken"
-			},
-			prefix: "!"
-		};
+export class GuildConfig {
+	private _values: IConfig;
+	public id: Snowflake;
+
+	constructor(id: Snowflake) {
+		this.id = id;
+		this._values = guildConfigValues;
 	}
 
-	get values() {
+	get values(){
 		return this._values;
 	}
 
-	set values(newValue) {
+	set values(newValue){
 		this._values = newValue;
+	}
+}
+
+export default class Config {
+	public guilds: {
+		[guildID: string]: GuildConfig;
+	} = {};
+
+	fromID(guildID: Snowflake){
+		if (!this.guilds[guildID]) this.guilds[guildID] = new GuildConfig(guildID);
+		return this.guilds[guildID];
 	}
 }

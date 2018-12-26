@@ -14,8 +14,7 @@ const fileOptions = {
 		}),
 		format.json()
 	),
-	maxsize: 1024,
-	handleExceptions: true
+	maxsize: 1024
 };
 
 const consoleOptions = {
