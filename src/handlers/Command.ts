@@ -1,5 +1,6 @@
 import { Message, PermissionResolvable } from "discord.js";
 import { GuildConfig } from "../utility/Config";
+import validators from "../utility/Validation";
 
 export interface ICommandContext {
 	message: Message;
@@ -62,7 +63,7 @@ export default class Command {
 	public fillDefaults() {
 		if (!this.defaultArgs.length) return this;
 
-		this.userArgs = this.userArgs.map((_, index) => {
+		this.userArgs = this.args.map((_, index) => {
 			return this.userArgs[index] || this.defaultArgs[index];
 		});
 		return this;
@@ -79,47 +80,21 @@ export default class Command {
 			return this.ctx.message.guild.me.permissions.has(perm);
 		});
 	}
-}
 
-/*
+	public getArgumentsValidations(){
+		return this.expected.map((name, index) => {
 
-
-	private validate() {
-		const errors: string[] = [];
-		const devErrors: string[] = [];
-
-		//sorry for the side effect
-		const invalid = this.command.expected.filter((expect, index) => {
-			const validator = Validator.default[expect];
 			const value = this.userArgs[index];
 
-			if (!validator) {
-				devErrors.push(`${expect} is not valid`);
-				return true;
+			if(!name){
+				return {
+					isValid: true,
+					evaluated: value,
+					error: null
+				}
 			}
 
-			const { isValid, invalidMessage, normalizedValue } = validator(value, this.message);
-
-			if (!isValid) {
-				errors.push(`Invalid Argument [${this.command.args[index]}]: ${invalidMessage}`);
-				return true;
-			}
-
-			this.userArgs[index] = normalizedValue || value;
-			return false;
+			return validators[name](value, this.ctx);
 		});
-
-		if (!invalid.length) return true;
-
-		const errorMessage = errors.join("\n");
-		const devErrorMessage = errors.join("\n");
-
-		if (errorMessage.length > 0) this.message.channel.send(errorMessage);
-
-		if (devErrorMessage.length > 0) {
-			this.message.channel.send(this.config.values.messages.CommandHandlingError);
-			logger.error(devErrorMessage);
-		}
-   }
-   
-*/
+	}
+}

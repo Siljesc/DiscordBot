@@ -50,6 +50,14 @@ export default class CommandHandler {
 			.setUserArgs(cmdArgs)
 			.fillDefaults();
 
+		// Check we got all arguments
+		const filledArguments = this.command.userArgs.filter((arg) => arg  !== undefined);
+
+		if (filledArguments.length < this.command.args.length){
+			message.channel.send(`Missing arguments. Expected ${this.command.args.length} but got ${filledArguments.length}`);
+			return;
+		}
+
 		// Check permissions
 		if (!this.command.checkPermissions()) {
 			message.channel.send(guildConfig.values.messages.MissingUserPermissions);
@@ -60,6 +68,25 @@ export default class CommandHandler {
 			message.channel.send(guildConfig.values.messages.MissingClientPermissions);
 			return;
 		}
+
+		// Valid arguments
+
+		const validations = this.command.getArgumentsValidations();
+		const invalidArguments = validations.filter(({isValid}) => !isValid);
+
+		if(invalidArguments.length){
+			const errorMessage = invalidArguments
+				.map(({error}) => error)
+				.join("\n");
+
+			message.channel.send(errorMessage);
+			return;
+		}
+
+		//Replace arguments with their "real" value;
+		this.command.userArgs.map((_, index) => {
+			return validations[index].evaluated;
+		});
 
 		this.command.run();
 	}
