@@ -5,6 +5,7 @@ import validators from "../utility/Validation";
 export interface ICommandContext {
 	message: Message;
 	config: GuildConfig;
+	commands: Command[];
 }
 
 export interface ICommandOptions {
@@ -15,6 +16,7 @@ export interface ICommandOptions {
 	args: string[];
 	defaultArgs: string[];
 	expected: string[];
+	type: string;
 	clientPermissions: PermissionResolvable[];
 	userPermissions: PermissionResolvable[];
 	rolesNeeded: string[];
@@ -29,6 +31,7 @@ export default class Command {
 	args: string[];
 	defaultArgs: string[];
 	expected: string[];
+	type: string;
 	clientPermissions: PermissionResolvable[];
 	userPermissions: PermissionResolvable[];
 	rolesNeeded: string[];
@@ -43,6 +46,7 @@ export default class Command {
 		this.example = options.example;
 		this.args = options.args;
 		this.defaultArgs = options.defaultArgs;
+		this.type = options.type;
 		this.expected = options.expected;
 		this.clientPermissions = options.clientPermissions;
 		this.userPermissions = options.userPermissions;
@@ -86,7 +90,7 @@ export default class Command {
 
 			const value = this.userArgs[index];
 
-			if(!name){
+			if(name === "string"){
 				return {
 					isValid: true,
 					evaluated: value,
