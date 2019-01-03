@@ -29,8 +29,10 @@ export default class CommandHandler {
 	public parse(message: Message, config: Config) {
 		this.message = message;
 
+		message.react("👀"); //Eye Emoji
+
 		const guildConfig = config.fromID(message.guild.id);
-		const ctx = { message, config: guildConfig };
+		const ctx = { message, config: guildConfig, commands: this.commands };
 
 		const withoutPrefix = message.content.slice(guildConfig.values.prefix.length);
 		const [cmdName, ...cmdArgs] = withoutPrefix.split(" ");
@@ -51,10 +53,12 @@ export default class CommandHandler {
 			.fillDefaults();
 
 		// Check we got all arguments
-		const filledArguments = this.command.userArgs.filter((arg) => arg  !== undefined);
+		const filledArguments = this.command.userArgs.filter(arg => arg !== undefined);
 
-		if (filledArguments.length < this.command.args.length){
-			message.channel.send(`Missing arguments. Expected ${this.command.args.length} but got ${filledArguments.length}`);
+		if (filledArguments.length < this.command.args.length) {
+			message.channel.send(
+				`Missing arguments. Expected ${this.command.args.length} but got ${filledArguments.length}`
+			);
 			return;
 		}
 
@@ -72,12 +76,10 @@ export default class CommandHandler {
 		// Valid arguments
 
 		const validations = this.command.getArgumentsValidations();
-		const invalidArguments = validations.filter(({isValid}) => !isValid);
+		const invalidArguments = validations.filter(({ isValid }) => !isValid);
 
-		if(invalidArguments.length){
-			const errorMessage = invalidArguments
-				.map(({error}) => error)
-				.join("\n");
+		if (invalidArguments.length) {
+			const errorMessage = invalidArguments.map(({ error }) => error).join("\n");
 
 			message.channel.send(errorMessage);
 			return;
