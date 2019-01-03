@@ -15,5 +15,6 @@ export default new Command({
 	clientPermissions: [],
 	userPermissions: [],
 	rolesNeeded: [],
+	type: "testing",
 	run: reply
 });
