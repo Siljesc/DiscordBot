@@ -19,5 +19,6 @@ export default new Command({
 	clientPermissions: [],
 	userPermissions: [],
 	rolesNeeded: [],
+	type: "utility",
 	run: getPing
 });
