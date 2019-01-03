@@ -3,6 +3,10 @@ import Command from "../handlers/Command";
 import { promisify } from "util";
 import * as glob from "glob";
 
+export function capitalize(str: string){
+	return str[0].toUpperCase() + str.slice(1);
+}
+
 export function getUserMention(message: Message) {
 	return message.mentions.members.first();
 }

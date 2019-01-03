@@ -7,5 +7,5 @@ export function connect() {
 		return env;
 	});
 
-	return mongoose.connect(`${url}/${dbName}`);
+	return mongoose.connect(`${url}/${dbName}`, { useNewUrlParser: true });
 }
